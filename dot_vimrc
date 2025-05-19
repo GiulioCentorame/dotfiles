@@ -1,0 +1,198 @@
+
+"""""""""""""
+" Run first "
+"""""""""""""
+" This is all the options that must be run *before* anything else
+
+" vi compatibility mode [ALWAYS FIRST] "
+""""""""""""""""""""""""""""""""""""""""
+" Get rid of vi compatibility mode, in case it's enabled by default for
+" some reason 
+" NOTE: this must be always first, in case vim's default is `compatible`
+" for some reason
+set nocompatible
+
+" Plugins (vim-plug) "
+""""""""""""""""""""""
+" Manage vim plugins through vim-plug
+" I try to keep plugins to a minimum to guarantee better portability and
+" startup time, but I need some of them. vim-plug is small enough to 
+
+" This snippet bootstraps vim-plug if it isn't installed already
+" Source: https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Installed plugins "
+"""""""""""""""""""""
+
+call plug#begin()
+
+" List your plugins from here with the following syntax
+"Plug 'tpope/vim-sensible'
+" NOTE: remember to run:
+" - `:PlugInstall` to install plugins
+" - `:PlugUpdate` to update or install plugins
+" - `:PlugClean` to remove plugins no longer in the list
+"
+" TODO: check if anything useful here:
+" https://medium.com/@huntie/10-essential-vim-plugins-for-2018-39957190b7a9
+
+" Strip trailing whitespace
+Plug 'inkarkat/vim-ingo-library'
+Plug 'inkarkat/vim-DeleteTrailingWhitespace'
+" Snakemake syntax plugin
+Plug 'snakemake/snakemake', {'rtp': 'misc/vim'}
+" Doom Emacs' one colour palette
+Plug 'romgrk/doom-one.vim'
+" Atom's colour palette (for consistency with tmux)
+Plug 'joshdick/onedark.vim'
+" Support .editorconfig files if vim version <9.x
+" TODO: there should be no conflicts if Vim is shipped with a default
+" version of editorconfig (from version 9.x), but I haven't tested it
+" yet
+Plug 'editorconfig/editorconfig-vim'
+" Better bottom bar
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'sheerun/vim-polyglot'
+"Plug 'itchyny/lightline.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
+" TODO: check if anything useful here https://vi.stackexchange.com/questions/2047/what-are-the-differences-between-latex-plugins?__cf_chl_tk=idL3PbCVSfMDKp0I3vP.QRZL9VezNhRP0tkgda9ngFQ-1747111514-1.0.1.1-QzGUTYQji9SE6BMeUNaTEIorTB3p5BygN0.b.NgVCIM
+" https://redlib.catsarch.com/r/vim/comments/4fm7vo/vim_not_very_well_suited_for_latex/.
+Plug 'lervag/vimtex'
+Plug 'Thyrum/vim-stabs'
+" Search through fzf
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'preservim/nerdtree'
+" Support for basic Unix operations
+Plug 'tpope/vim-eunuch'
+Plug 'airblade/vim-gitgutter'
+Plug 'jpalardy/vim-slime'
+
+" NOTE: `call plug#end()` also sets the following options:
+" - filetype plugin indent on
+" - syntax enable
+call plug#end()
+
+"""""""""""""""""
+" Colour scheme "
+"""""""""""""""""
+" Set 256-colour palette (8-bit colors; supported almost everywhere in 
+" modern terminals)
+"set t_Co=256
+
+" Enable Technicolor (24-bit colours; if the terminal supports it)
+set termguicolors
+
+" Set theme to doom-one 
+" NOTE: this requires the romgrk/doom-one.vim plugin
+colorscheme doom-one
+
+" Set theme to onedark
+"let g:onedark_hide_endofbuffer = 1 
+"let g:lightline = {
+"  \ 'colorscheme': 'onedark',
+"  \ }
+syntax on
+"colorscheme onedark
+
+" Set Airline theme
+"let g:airline_theme='deus'
+
+let g:airline_theme='onedark'
+let g:airline_powerline_fonts= 1
+
+"""""""""""""""""""""""
+" Syntax highlighting "
+"""""""""""""""""""""""
+
+
+""""""""""""""""""
+" Line numbering "
+""""""""""""""""""
+" Setting both absolute and relative line numbering enables hybrid 
+" numbering (relative numbering with absolute line numbers for the
+" highlighted line)
+
+" Set absolute line numbers
+set number
+" Set relative line numbers
+set relativenumber
+
+""""""""""""""""""
+" Tabs as spaces "
+""""""""""""""""""
+" FIXME: this entire section conflicts with EditorConfig. I have disabled it
+" for now, since editorconfig is substantially better in terms of 
+" readability, but *ideally* you'd have both of them running at the same
+" time. I am happy to just integrate an .editorconfig file in every single one
+" of my projects, since I can (and will) forget to set up the text editor on
+" another machine anyway.
+
+" This enables filetype-based indentation
+" NOTE: this is also implicitly set by `plug#end()`, see the
+" #Plugins section
+"filetype plugin indent on
+" shiftwidth defines an indentation as 4 spaces wide, while smarttab
+" allows Tab to go to the next indentation (instead of the next Tab
+" stop)
+set shiftwidth=8
+set tabstop=8
+set smarttab
+
+" This sets vim to use spaces instead of Tab characters. I don't want
+" this on by default every time I launch Vim, but it's here for reference.
+" NOTE: this is *extremely* bad when working with Makefiles, since they 
+" expect tabs over spaces.
+":set expandtab
+
+" This bit sets tab stops to be different from indentation width, so that
+" they are more visible if not using `:set list`. It's also deactivated
+" by default as displaying invisible characters in another way seems to be
+" visually better and less confusing
+":set tabstop=8 softtabstop=0
+
+""""""""""""""""""""""""""""""""
+" Display invisible characters "
+""""""""""""""""""""""""""""""""
+" Another option for my own sanity: this displays invisible characters
+" using the set of characters shown below:
+" - eol: end of line
+" - tab: tab characters (NOT indentations! See above)
+" - trail: trailing whitespace
+" - extends: 
+set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+
+" This allows hidden characters to be displayed by default (it can be
+" turned off by calling `:set nolist`). It's also off by default because
+" I would rather toggle it on a case-by-case basis (see below)
+":set list
+
+" Toggle `:set list` using a keyboard shortcut (F5)
+noremap <F5> :set list!<CR>
+inoremap <F5> <C-o>:set list!<CR>
+cnoremap <F5> <C-c>:set list!<CR> 
+
+""""""""""""""""""""""""
+" Vimtex configuration "
+""""""""""""""""""""""""
+" Viewer method
+let g:vimtex_view_method = 'zathura'
+
+" Compiler backend (latexmk is the default one)
+"let g:vimtex_compiler_method = 'latexrun'
+
+" Localleader (default is /)
+"let maplocalleader = ","
+
+"""""""""""""""""""""""""""
+" vim-slime configuration "
+"""""""""""""""""""""""""""
+" Use tmux as target for REPL
+let g:slime_target = "tmux"
