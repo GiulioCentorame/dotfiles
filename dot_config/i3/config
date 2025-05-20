@@ -17,6 +17,8 @@ font pango:monospace 10
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
+# Custom font (I like Iosevka's conciseness)
+#font pango:Iosevka Aile Medium 10
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -325,7 +327,8 @@ exec --no-startup-id feh --bg-fill ~/Pictures/knvise3sljax.png
 
 #exec --no-startup-id conky -c ~/.config/conky/desktop_guru/conky.conf
 
-# Screenshots shortcuts (requires xclip and maim)
+# Screenshots shortcuts (requires xclip and maim) #
+###################################################
 # From https://gist.github.com/dianjuar/ee774561a8bc02b077989bc17424a19f
 
 # Regular screenshots
@@ -342,9 +345,15 @@ bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection c
 bindsym $mod+m move workspace to output left
 bindsym $mod+comma move workspace to output right
 
+# Laptop monitor toggle #
+#########################
+
 # Toggle laptop integrated display on/off 
 # from https://unix.stackexchange.com/questions/315726/how-to-create-xrandr-output-toggle-script
 bindsym $mod+backslash exec --no-startup-id xrandr --listactivemonitors | grep eDP-1 >/dev/null && xrandr --output eDP-1 --off || xrandr --output eDP-1 --mode 1920x1080
+
+# Redshift #
+############
 
 # Redshift toggle with Ctrl+Mod+r
 #exec --no-startup-id "redshift -P -O 2500" # Just so startup with my preffered values
@@ -363,3 +372,9 @@ bindsym 5 exec --no-startup-id "$kill_redshift redshift -P -O 5000", mode "defau
 bindsym Return mode "default"
 bindsym Escape mode "default"
 }
+
+# xhidecursor #
+###############
+
+# Toggle xhidecursor on/off
+bindsym $mod+ctrl+c exec --no-startup-id hide_cursor_toggle.sh
