@@ -9,9 +9,9 @@
 
 if ( pidof -q xhidecursor ); then
 	killall xhidecursor
-	notify-send "Displaying cursor when typing"
+	notify-send "xhidecursor: displaying cursor when typing"
 else
 	xhidecursor&
-	notify-send "Hiding cursor when typing"
+	notify-send "xhidecursor: hiding cursor when typing"
 fi
 	
