@@ -6,11 +6,11 @@ char *externalpipe_sigusr1[] = {"/bin/sh", "-c", "externalpipe_buffer.sh st_stri
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=21:antialias=true:autohint=true";
+static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
 /* Spare fonts */
 static char *font2[] = {
-/*	"Inconsolata for Powerline:pixelsize=20:antialias=true:autohint=true", */
-/*	"Hack Nerd Font Mono:pixelsize=20:antialias=true:autohint=true", */
+/*	"Inconsolata for Powerline:pixelsize=12:antialias=true:autohint=true", */
+/*	"Hack Nerd Font Mono:pixelsize=11:antialias=true:autohint=true", */
 };
 
 static int borderpx = 2;
@@ -101,7 +101,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.7;
+float alpha = 0.8;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
@@ -174,6 +174,17 @@ static unsigned int mousebg = 0;
 static unsigned int defaultattr = 11;
 
 /*
+ * Use TERMMOD + U to extract URL, then pipe to dmenu to select and open one.
+ * (from https://st.suckless.org/patches/externalpipe/)
+ * 
+ * Requires  linkgrabber in $PATH and lets xdg-open handle the link
+ */
+
+static char *cmd_openurl[] = { "/bin/sh", "-c",
+	"xurls | dmenu -l 10 -w $WINDOWID | xargs -r xdg-open",
+	"externalpipe", NULL };
+
+/*
  * Force mouse select/shortcuts while mask is active (when MODE_MOUSE is set).
  * Note that if you want to use ShiftMask with selmasks, set this to an other
  * modifier, set to 0 to not use it.
@@ -217,7 +228,8 @@ static Shortcut shortcuts[] = {
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
-    { ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
+	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
+	{ TERMMOD,              XK_U,           externalpipe,   {.v = cmd_openurl} },
 };
 
 /*
@@ -490,13 +502,26 @@ static char ascii_printable[] =
 	"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
 	"`abcdefghijklmnopqrstuvwxyz{|}~";
 
-/*
- * Open urls starting with urlprefixes, contatining urlchars
- * by passing as ARG1 to urlhandler.
+/**
+ * Undercurl style. Set UNDERCURL_STYLE to one of the available styles.
+ *
+ * Curly: Dunno how to draw it *shrug*
+ *  _   _   _   _
+ * ( ) ( ) ( ) ( )
+ *	 (_) (_) (_) (_)
+ *
+ * Spiky:
+ * /\  /\   /\	/\
+ *   \/  \/	  \/
+ *
+ * Capped:
+ *	_     _     _
+ * / \   / \   / \
+ *    \_/   \_/
  */
-char* urlhandler = "xdg-open";
-char urlchars[] =
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	"abcdefghijklmnopqrstuvwxyz"
-	"0123456789-._~:/?#@!$&'*+,;=%";
-char* urlprefixes[] = {"http://", "https://", NULL};
+// Available styles
+#define UNDERCURL_CURLY 0
+#define UNDERCURL_SPIKY 1
+#define UNDERCURL_CAPPED 2
+// Active style
+#define UNDERCURL_STYLE UNDERCURL_SPIKY
