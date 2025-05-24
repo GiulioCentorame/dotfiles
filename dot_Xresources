@@ -1,4 +1,9 @@
 Xft.dpi: 125
+!st.font: Iosevka Term:pixelsize=22:antialias=true:autohint=true
+st.font: JetBrains Mono:pixelsize=20:antialias=true:autohint=true
+st.alpha: 0.7
+st.borderpx: 0
+
 ! special
 *.foreground:   #a7a5a5
 *.background:   #000000
