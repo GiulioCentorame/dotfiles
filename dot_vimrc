@@ -49,7 +49,7 @@ Plug 'snakemake/snakemake', {'rtp': 'misc/vim'}
 " Doom Emacs' one colour palette
 Plug 'romgrk/doom-one.vim'
 " Atom's colour palette (for consistency with tmux)
-Plug 'joshdick/onedark.vim'
+"Plug 'joshdick/onedark.vim'
 " Support .editorconfig files if vim version <9.x
 " TODO: there should be no conflicts if Vim is shipped with a default
 " version of editorconfig (from version 9.x), but I haven't tested it
@@ -65,7 +65,10 @@ Plug 'tpope/vim-commentary'
 " TODO: check if anything useful here https://vi.stackexchange.com/questions/2047/what-are-the-differences-between-latex-plugins?__cf_chl_tk=idL3PbCVSfMDKp0I3vP.QRZL9VezNhRP0tkgda9ngFQ-1747111514-1.0.1.1-QzGUTYQji9SE6BMeUNaTEIorTB3p5BygN0.b.NgVCIM
 " https://redlib.catsarch.com/r/vim/comments/4fm7vo/vim_not_very_well_suited_for_latex/.
 Plug 'lervag/vimtex'
-Plug 'Thyrum/vim-stabs'
+"Plug 'Thyrum/vim-stabs'
+"^ This plugin has some minor issues with R, so I am reverting back to the
+"old venerable
+Plug 'dpc/vim-smarttabs'
 " Search through fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -144,7 +147,7 @@ set relativenumber
 " stop)
 set shiftwidth=8
 set tabstop=8
-set smarttab
+"set smarttab
 
 " This sets vim to use spaces instead of Tab characters. I don't want
 " this on by default every time I launch Vim, but it's here for reference.
