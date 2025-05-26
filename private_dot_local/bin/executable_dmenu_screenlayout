@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Launch a xrandr setup file created with ARandR #
+##################################################
+
+# By default, the screen layouts are saved as *.sh files, so 
+# we remove the extension and add it back again when running it with
+# xargs.
+
+# Path where the monitor layouts are saved 
+# (default is ~/.screenlayout)
+screenlayout_path="$HOME/.screenlayout"
+
+find "$screenlayout_path" -iname "*.sh" -type f -executable \
+	-exec basename {} \; |\
+	sed 's/.sh$//g' |\
+	dmenu -p "Monitor layout preset:" |\
+	xargs -I {} sh "$screenlayout_path/{}.sh"
