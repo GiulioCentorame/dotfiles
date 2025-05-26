@@ -378,3 +378,9 @@ bindsym Escape mode "default"
 
 # Toggle xhidecursor on/off
 bindsym $mod+ctrl+c exec --no-startup-id hide_cursor_toggle.sh
+
+# Change monitor layout with dmenu #
+####################################
+# This small script just picks a file from ~/.screenlayout through 
+# dmenu and executes it
+bindsym $mod+ctrl+d exec dmenu_screenlayout
