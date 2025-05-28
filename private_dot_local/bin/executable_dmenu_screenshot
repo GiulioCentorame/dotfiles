@@ -1,0 +1,78 @@
+#!/bin/sh
+
+set -eu
+
+##########################################
+# Capture screen with maim through dmenu #
+##########################################
+
+# Simple script to 
+
+# Path options
+
+screenshot_folder="$HOME/Pictures/Screenshots"
+filename="screenshot_$(date +'%Y-%m-%d_%H:%M:%S').png"
+screenshot_destination="$screenshot_folder/$filename"
+
+# INPUT #
+#########
+
+# What kind of screenshot? (one of Screen, Window, or Selection)
+save_type=$(printf 'Clipboard\nDisk' | dmenu -i -p 'Capture:')
+# Where do we want to save it? (Clipboard or disk)
+capture_type=$(printf 'Screen\nWindow\nSelection' |\
+            dmenu -i -p 'Destination:')
+# How long do we want to wait to capture it?
+# Defaults to 0
+delay=$(dmenu < /dev/null -i -p 'Delay (seconds, default: 0)')
+
+# Also, any rubbish input should be 0
+case "$delay" in
+	("" | *[!0123456789]*) delay="0"
+esac
+
+# Make sure the screenshot folder exists
+mkdir -p "$screenshot_folder"
+
+# Capture screen #
+##################
+
+# Select screenshot option
+if [ "$save_type" = 'Clipboard' ]; then
+	case "$capture_type" in
+		Screen) maim \
+		        --delay "${delay:-0}" |\
+		        xclip -selection clipboard -t image/png ;;
+		Window) maim \
+		        --window "$(xdotool getactivewindow)" \
+		        --delay "${delay:-0}"|\
+		        xclip -selection clipboard -t image/png ;;
+		Selection) maim \
+		           --select \
+		           --delay "${delay:-0}" |\
+		           xclip -selection clipboard -t image/png ;;
+		*) notify-send "Capture type not valid."
+		   exit 1 ;;
+	esac && \
+	notify-send "Screenshot saved to clipboard"
+elif [ "$save_type" = 'Disk' ]; then
+	case "$capture_type" in
+		Screen) maim \
+		        --delay "${delay:-0}" \
+		        > "$screenshot_destination" ;;
+		Window) maim \
+		        --select \
+		        --window "$(xdotool getactivewindow)" \
+		        > "$screenshot_destination" ;;
+		Selection) maim \
+		           --select \
+		           --delay "${delay:-0}" \
+		           > "$screenshot_destination" ;;
+		*) notify-send "Capture type not valid."
+		   exit 1 ;;
+	esac && \
+	notify-send "Screenshot saved in $screenshot_destination"
+else
+	notify-send "Destination type not valid"
+	exit 1
+fi

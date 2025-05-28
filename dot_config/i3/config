@@ -327,19 +327,15 @@ exec --no-startup-id feh --bg-fill ~/Pictures/knvise3sljax.png
 
 #exec --no-startup-id conky -c ~/.config/conky/desktop_guru/conky.conf
 
-# Screenshots shortcuts (requires xclip and maim) #
-###################################################
-# From https://gist.github.com/dianjuar/ee774561a8bc02b077989bc17424a19f
+# Screenshots #
+###############
+# Simple script that depends on xclip, notify-send, dmenu, and maim 
+# Features:
+#  - save screenshots to clipboard or disk
+#  - screenshot a full window, a selection, or the whole screen
+#  - screenshot with a small delay (in seconds)
 
-# Regular screenshots
-bindsym Print exec --no-startup-id maim "/$HOME/Pictures/screenshot_$(date +'%Y-%m-%d_%H:%M:%S').png"
-bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) "/$HOME/Pictures/screenshot_$(date +'%Y-%m-%d_%H:%M:%S').png"
-bindsym Shift+Print exec --no-startup-id maim --select "/$HOME/Pictures/screenshot_$(date +'%Y-%m-%d_%H:%M:%S').png"
-
-## Clipboard Screenshots
-bindsym Ctrl+Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
-bindsym Ctrl+$mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
-bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
+bindsym Print exec --no-startup-id dmenu_screenshot
 
 # Move window to left/right monitor
 bindsym $mod+m move workspace to output left
@@ -354,7 +350,6 @@ bindsym $mod+backslash exec --no-startup-id xrandr --listactivemonitors | grep e
 
 # Redshift #
 ############
-
 # Redshift toggle with Ctrl+Mod+r
 #exec --no-startup-id "redshift -P -O 2500" # Just so startup with my preffered values
 # Startup with smart colour temperature first (just to try it for a bit)
