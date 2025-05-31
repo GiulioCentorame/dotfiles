@@ -37,6 +37,9 @@ export EDITOR="vi -e"
 # Default terminal (nonstandard variable used by i3-sensible-terminal)
 export TERMINAL=st
 
+# Default pager (nonstandard but it's mainly for sacc)
+export PAGER=less
+
 # PATH #
 ########
 
