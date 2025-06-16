@@ -1,4 +1,3 @@
-
 """""""""""""
 " Run first "
 """""""""""""
@@ -111,11 +110,6 @@ syntax on
 let g:airline_theme='onedark'
 let g:airline_powerline_fonts= 1
 
-"""""""""""""""""""""""
-" Syntax highlighting "
-"""""""""""""""""""""""
-
-
 """"""""""""""""""
 " Line numbering "
 """"""""""""""""""
@@ -128,15 +122,9 @@ set number
 " Set relative line numbers
 set relativenumber
 
-""""""""""""""""""
-" Tabs as spaces "
-""""""""""""""""""
-" FIXME: this entire section conflicts with EditorConfig. I have disabled it
-" for now, since editorconfig is substantially better in terms of 
-" readability, but *ideally* you'd have both of them running at the same
-" time. I am happy to just integrate an .editorconfig file in every single one
-" of my projects, since I can (and will) forget to set up the text editor on
-" another machine anyway.
+"""""""""""""""
+" Indentation "
+"""""""""""""""
 
 " This enables filetype-based indentation
 " NOTE: this is also implicitly set by `plug#end()`, see the
@@ -149,10 +137,7 @@ set shiftwidth=8
 set tabstop=8
 "set smarttab
 
-" This sets vim to use spaces instead of Tab characters. I don't want
-" this on by default every time I launch Vim, but it's here for reference.
-" NOTE: this is *extremely* bad when working with Makefiles, since they 
-" expect tabs over spaces.
+" This sets vim to use spaces instead of Tab characters.
 ":set expandtab
 
 " This bit sets tab stops to be different from indentation width, so that
@@ -160,6 +145,9 @@ set tabstop=8
 " by default as displaying invisible characters in another way seems to be
 " visually better and less confusing
 ":set tabstop=8 softtabstop=0
+
+" Set a limit of 80 characters for each line
+set colorcolumn=80
 
 """"""""""""""""""""""""""""""""
 " Display invisible characters "
@@ -169,7 +157,10 @@ set tabstop=8
 " - eol: end of line
 " - tab: tab characters (NOT indentations! See above)
 " - trail: trailing whitespace
-" - extends: 
+" - extends: indicates that the line continues on the following line when
+"            `wrap` is off (always in the last column)
+" - precedes: indicates that there is text preceding the character (always in
+"             the first column)
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
 " This allows hidden characters to be displayed by default (it can be
