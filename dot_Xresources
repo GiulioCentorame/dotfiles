@@ -1,6 +1,8 @@
 Xft.dpi: 125
-!st.font: Iosevka Term:pixelsize=22:antialias=true:autohint=true
-st.font: JetBrains Mono:pixelsize=20:antialias=true:autohint=true
+st.font: CommitMonoCustom:pixelsize=20:antialias=true:autohint=true
+!st.font: Iosevka Term:pixelsize=20:antialias=true:autohint=true
+!st.font: JetBrains Mono:pixelsize=20:antialias=true:autohint=true
+st.font2: JetBrainsMono Nerd Font:pixelsize=20:antialias=true:autohint=true
 st.alpha: 0.7
 st.borderpx: 0
 
