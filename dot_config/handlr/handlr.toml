@@ -1,0 +1,16 @@
+enable_selector = true
+selector = "dmenu -i -p 'Open With: '"
+term_exec_args = '-e'
+expand_wildcards = false
+
+# Template for regex handlers #
+###############################
+# [[handlers]]
+# exec = "freetube %u" # Uses desktop entry field codes
+# terminal = false # Set to true for terminal apps, false for GUI apps (optional; defaults to false)
+# regexes = ['(https://)?(www\.)?youtu(be\.com|\.be)/*.'] # Use single-quote literal strings
+
+[[handlers]]
+exec = "io.freetubeapp.FreeTube %u" 
+terminal = false 
+regexes = ['(https://)?(www\.)?youtu(be\.com|\.be)/*.'] 
