@@ -1,22 +1,29 @@
 [Added Associations]
 application/atom+xml=mullvad-browser.desktop;
 application/geo+json=userapp-vim-BSFW02.desktop;
-application/pdf=org.pwmt.zathura.desktop;
+application/octet-stream=gvim.desktop;
+application/pdf=org.gnome.Evince.desktop;org.pwmt.zathura.desktop;gimp.desktop;libreoffice-draw.desktop;
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet=org.onlyoffice.desktopeditors.desktop;
 image/jpeg=feh.desktop;
 image/tiff=feh.desktop;
 text/calendar=net.thunderbird.Thunderbird.desktop;
-text/markdown=org.xfce.mousepad.desktop;
-text/plain=nvim.desktop;
+text/csv=org.xfce.mousepad.desktop;userapp-vim-BSFW02.desktop;
+text/markdown=vim.desktop;org.xfce.mousepad.desktop;
+text/plain=vim.desktop;nvim.desktop;
 video/x-matroska=mpv.desktop;
 x-scheme-handler/http=xfce4-web-browser.desktop;
 x-scheme-handler/https=xfce4-web-browser.desktop;
+text/css=vim.desktop;
+
 [Default Applications]
 application/atom+xml=mullvad-browser.desktop;
 application/djvu=zathura.desktop;
+application/epub+zip=org.pwmt.zathura.desktop;com.github.johnfactotum.Foliate.desktop;
 application/geo+json=userapp-vim-BSFW02.desktop;
 application/json=vim.desktop;
 application/msword=org.onlyoffice.desktopeditors.desktop;
-application/pdf=zathura.desktop;
+application/octet-stream=gvim.desktop;
+application/pdf=org.pwmt.zathura.desktop;
 application/postscript=org.pwmt.zathura.desktop;
 application/schema+json=vim.desktop;
 application/vnd.jgraph.mxfile=drawio.desktop;
@@ -24,6 +31,7 @@ application/vnd.ms-excel*=org.onlyoffice.desktopeditors.desktop;
 application/vnd.ms-powerpoint*=org.onlyoffice.desktopeditors.desktop;
 application/vnd.ms-word*=org.onlyoffice.desktopeditors.desktop;
 application/vnd.openxmlformats-officedocument.wordprocessingml.document=org.onlyoffice.desktopeditors.desktop;
+image/*=feh.desktop;
 image/png=feh.desktop;
 inode/directory=lf.desktop;
 text/*=vim.desktop;
@@ -42,3 +50,4 @@ x-scheme-handler/mailto=net.thunderbird.Thunderbird.desktop;aerc.desktop;
 x-scheme-handler/terminal=st;
 x-scheme-handler/unknown=mullvad-browser.desktop;
 x-scheme-handler/webcal=net.thunderbird.Thunderbird.desktop;
+x-scheme-handler/zotero=org.zotero.Zotero.desktop;
