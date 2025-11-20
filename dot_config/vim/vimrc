@@ -1,4 +1,3 @@
-"""""""""""""
 " Run first "
 """""""""""""
 " This is all the options that must be run *before* anything else
@@ -6,20 +5,31 @@
 " vi compatibility mode [ALWAYS FIRST] "
 """"""""""""""""""""""""""""""""""""""""
 " Get rid of vi compatibility mode, in case it's enabled by default for
-" some reason 
+" some reason
 " NOTE: this must be always first, in case vim's default is `compatible`
 " for some reason
 set nocompatible
+
+" XDG dirs compatibility "
+""""""""""""""""""""""""""
+" Keep .viminfo file
+set viminfofile=$XDG_STATE_HOME/vim/viminfo
+
+" Filetype support "
+""""""""""""""""""""
+filetype on	   "filetype detection
+filetype plugin on "file-specific plugins
+filetype indent on "file-specific indentation
 
 " Plugins (vim-plug) "
 """"""""""""""""""""""
 " Manage vim plugins through vim-plug
 " I try to keep plugins to a minimum to guarantee better portability and
-" startup time, but I need some of them. vim-plug is small enough to 
+" startup time, but I need some of them. vim-plug is small enough to
 
 " This snippet bootstraps vim-plug if it isn't installed already
 " Source: https://github.com/junegunn/vim-plug/wiki/tips#automatic-installation
-let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.cache/vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
@@ -40,13 +50,8 @@ call plug#begin()
 " TODO: check if anything useful here:
 " https://medium.com/@huntie/10-essential-vim-plugins-for-2018-39957190b7a9
 
-" Strip trailing whitespace
-Plug 'inkarkat/vim-ingo-library'
-Plug 'inkarkat/vim-DeleteTrailingWhitespace'
-" Snakemake syntax plugin
-Plug 'snakemake/snakemake', {'rtp': 'misc/vim'}
-" Doom Emacs' one colour palette
-Plug 'romgrk/doom-one.vim'
+Plug 'snakemake/snakemake', {'rtp': 'misc/vim'} " Snakemake syntax plugin
+Plug 'romgrk/doom-one.vim' " Doom Emacs' one colour palette
 " Atom's colour palette (for consistency with tmux)
 "Plug 'joshdick/onedark.vim'
 " Support .editorconfig files if vim version <9.x
@@ -68,14 +73,25 @@ Plug 'lervag/vimtex'
 "^ This plugin has some minor issues with R, so I am reverting back to the
 "old venerable
 Plug 'dpc/vim-smarttabs'
-" Search through fzf
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Search through fzf
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
-" Support for basic Unix operations
-Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-eunuch' " Support for basic Unix operations
 Plug 'airblade/vim-gitgutter'
-Plug 'jpalardy/vim-slime'
+Plug 'jpalardy/vim-slime' " REPL in combination with tmux
+Plug 'ntpeters/vim-better-whitespace' " Highlight trailing whitespace
+Plug 'vimwiki/vimwiki'
+Plug 'preservim/vim-markdown'
+Plug 'tbabej/taskwiki'
+" Writing tools
+Plug 'preservim/vim-pencil'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'preservim/vim-wordy'
+Plug 'morhetz/gruvbox' "writing colourscheme
+" Snippets
+Plug 'SirVer/ultisnips' "Engine
+Plug 'honza/vim-snippets' "Snippet repository
 
 " NOTE: `call plug#end()` also sets the following options:
 " - filetype plugin indent on
@@ -85,19 +101,19 @@ call plug#end()
 """""""""""""""""
 " Colour scheme "
 """""""""""""""""
-" Set 256-colour palette (8-bit colors; supported almost everywhere in 
+" Set 256-colour palette (8-bit colors; supported almost everywhere in
 " modern terminals)
 "set t_Co=256
 
 " Enable Technicolor (24-bit colours; if the terminal supports it)
 set termguicolors
 
-" Set theme to doom-one 
+" Set theme to doom-one
 " NOTE: this requires the romgrk/doom-one.vim plugin
 colorscheme doom-one
 
 " Set theme to onedark
-"let g:onedark_hide_endofbuffer = 1 
+"let g:onedark_hide_endofbuffer = 1
 "let g:lightline = {
 "  \ 'colorscheme': 'onedark',
 "  \ }
@@ -113,7 +129,7 @@ let g:airline_powerline_fonts= 1
 """"""""""""""""""
 " Line numbering "
 """"""""""""""""""
-" Setting both absolute and relative line numbering enables hybrid 
+" Setting both absolute and relative line numbering enables hybrid
 " numbering (relative numbering with absolute line numbers for the
 " highlighted line)
 
@@ -139,6 +155,8 @@ set tabstop=8
 
 " This sets vim to use spaces instead of Tab characters.
 ":set expandtab
+" NOTE: the current set of plugins messes with both smarttab and expantab
+" so they're currently off
 
 " This bit sets tab stops to be different from indentation width, so that
 " they are more visible if not using `:set list`. It's also deactivated
@@ -148,6 +166,11 @@ set tabstop=8
 
 " Set a limit of 80 characters for each line
 set colorcolumn=80
+let g:goyo_width=80 " Same with goyo plugin
+
+" I am not sure if I want scroll offset (lines above/below cursor that are
+" displayed by default), so this is currently off
+"set scrolloff=5
 
 """"""""""""""""""""""""""""""""
 " Display invisible characters "
@@ -169,9 +192,9 @@ set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 ":set list
 
 " Toggle `:set list` using a keyboard shortcut (F5)
-noremap <F5> :set list!<CR>
+noremap  <F5>      :set list!<CR>
 inoremap <F5> <C-o>:set list!<CR>
-cnoremap <F5> <C-c>:set list!<CR> 
+cnoremap <F5> <C-c>:set list!<CR>
 
 """"""""""""""""""""""""
 " Vimtex configuration "
@@ -189,4 +212,90 @@ let g:vimtex_view_method = 'zathura'
 " vim-slime configuration "
 """""""""""""""""""""""""""
 " Use tmux as target for REPL
-let g:slime_target = "tmux"
+let g:slime_target = 'tmux'
+
+"""""""""""""""""""""""""""""""""""""
+" vim-wiki + taskwiki configuration "
+"""""""""""""""""""""""""""""""""""""
+" Main configuration
+" - `path` is the vimwiki folder
+" - `syntax` is the style of syntax used by vimwiki
+" - `ext` is the extension used by files created by vimwiki
+let g:vimwiki_list = [ {'path': '~/Repositories/wiki', 'syntax': 'markdown', 'ext': '.md'}]
+" Supported extensions
+let g:vimwiki_ext2syntax = {'.md':'markdown', '.markdown':'markdown', '.mdown':'markdown'}
+" Markdown links as [text](text.md) instead of [text](text)
+let g:vimwiki_markdown_link_ext = 1
+" Use markdown syntax for taskwiki
+let g:taskwiki_markup_syntax = 'markdown'
+" Folding using builtin markdown mode
+let g:markdown_folding = 1
+" Auto header for diary notes
+let g:vimwiki_auto_header = 1
+
+""""""""""""""""""""""""""""""
+" vim-markdown configuration "
+""""""""""""""""""""""""""""""
+" Latex math support
+let g:vim_markdown_math = 1
+" YAML/TOML frontmatter support
+let g:vim_markdown_frontmatter = 1 "YAML
+let g:vim_markdown_toml_frontmatter = 1 "TOML
+" ~~Strikethrough~~ support
+let g:vim_markdown_strikethrough = 1
+
+""""""""""""""""""""""""""""""""""
+" Trailing whitespace management "
+""""""""""""""""""""""""""""""""""
+let g:better_whitespace_enabled=1 "Display trailing whitespace (default: on)
+let g:strip_whitespace_on_save=1  "Strip trailing whitespace on save
+
+""""""""""""
+" Snippets "
+""""""""""""
+let g:UltiSnipsExpandTrigger       = '<tab>' "expand snippets
+let g:UltiSnipsJumpForwardTrigger  = '<c-b>'
+let g:UltiSnipsJumpBackwardTrigger = '<c-z>'
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+""""""""""""""""""""
+" Goyo + Limelight "
+""""""""""""""""""""
+" This whole chunk allows :q to quit vim when Goyo is active
+" from https://github.com/junegunn/goyo.vim/wiki/Customization#ensure-q-to-quit-even-when-goyo-is-active
+function! s:goyo_enter()
+  let b:quitting = 0
+  let b:quitting_bang = 0
+  autocmd QuitPre <buffer> let b:quitting = 1
+  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
+endfunction
+
+function! s:goyo_leave()
+  " Quit Vim if this is the only remaining buffer
+  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+    if b:quitting_bang
+      qa!
+    else
+      qa
+    endif
+  endif
+endfunction
+
+" Trigger functions above when entering/exiting goyo
+autocmd! User GoyoEnter call <SID>goyo_enter()
+autocmd! User GoyoLeave call <SID>goyo_leave()
+" Also toggle Limelight at the same time
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
+
+""""""""""
+" Pencil "
+""""""""""
+" Pencil's autoformat feature is broken with vimwiki, but it's still useful
+" with other markdown files, so this just removes it in vimwiki buffers
+augroup pencil
+	autocmd!
+	autocmd FileType vimwiki call pencil#init({'wrap'       :'hard',
+	                                         \ 'autoformat' :0})

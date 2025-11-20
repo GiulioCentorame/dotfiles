@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# Shamelessly stolen from https://github.com/cgsdev0/dotfiles/blob/main/bin/watch-and-reload
+# (Thank you for your service o7)
+
+if ! which inotifywait &> /dev/null; then
+  echo "please install inotify-tools"
+  exit 1
+fi
+
+USAGE="Usage: $(basename $0) command [...deps] [-- ...args]"
+
+if [ "$#" == "0" ]; then
+	echo "$USAGE"
+	exit 1
+fi
+
+declare -a deps
+cmd="$1"
+shift
+
+while (( "$#" )); do
+
+  # these are the args to pass through
+  if [[ "$1" == '--' ]]; then
+    shift
+    break
+  fi
+
+  # dependencies
+  deps+=("$1")
+  shift
+done
+
+deps+=("$(which $cmd)")
+
+cleanup() {
+    pkill -TERM -P $PID &> /dev/null
+    kill -SIGTERM $PID &> /dev/null
+}
+
+trap "cleanup" EXIT
+while true; do
+    sleep 0.1
+    $cmd "$@" &
+    PID=$!
+
+    inotifywait -qq "${deps[@]}" -e MODIFY -e MOVE_SELF
+    pkill -TERM -P $PID &> /dev/null
+    kill -SIGTERM $PID &> /dev/null
+    echo "reloading..."
+done

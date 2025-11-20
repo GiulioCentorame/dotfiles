@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+if ! command -v static-web-server 2>/dev/null; then
+	echo "static-web-server not found"
+	exit 1
+fi
+
+static-web-server \
+	--host 127.0.0.1 \
+	--port 8787 \
+	--root ~/Repositories/wiki/ &
+
+xdg-open http://127.0.0.1:8787/mdwiki.html

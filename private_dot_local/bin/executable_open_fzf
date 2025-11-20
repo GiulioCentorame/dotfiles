@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+# Simple file opener with fzf
+
+# Prompt
+read -r -d '' prompt  <<'EOF'
+Open file with default application:
+[Ctrl-T files/dirs | Ctrl-P preview]
+EOF
+
+# Open file selected with fzf
+xdg-open \
+	$(fd . $HOME --hidden --type file | \
+	  fzf \
+	  --border=sharp \
+          --preview '[[ $FZF_PROMPT =~ Files ]] && bat --style=auto --color=always {} || tree -C {}' \
+	  --preview-window='45%,border-sharp' \
+	  --preview-window=hidden \
+	  --prompt='Files> ' \
+	  --bind 'ctrl-t:transform:[[ ! $FZF_PROMPT =~ Files ]] &&
+              echo "change-prompt(Files> )+reload(fd --type file)" ||
+              echo "change-prompt(Directories> )+reload(fd . $HOME --type directory)"' \
+	  --bind='ctrl-p:toggle-preview' \
+	  --header "$prompt" 
+	)
+
