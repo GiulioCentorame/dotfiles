@@ -1,0 +1,117 @@
+# vim: filetype=bash
+# Bash environment variables
+
+# XDG dirs #
+############
+
+export XDG_DATA_HOME="$HOME"/.local/share
+export XDG_CONFIG_HOME="$HOME"/.config
+export XDG_STATE_HOME="$HOME"/.local/state
+export XDG_CACHE_HOME="$HOME"/.cache
+
+# Default applications #
+########################
+
+# As God intended
+export VISUAL=/usr/bin/vim
+export EDITOR="vi -e"
+
+# Default terminal (nonstandard variable used by i3-sensible-terminal)
+export TERMINAL=st
+
+# Default pager (nonstandard but it's mainly for sacc)
+export PAGER=less
+
+# Themes #
+##########
+
+# Let qt6ct handle QT themes
+export QT_QPA_PLATFORMTHEME=qt6ct
+
+# Program preferences #
+#######################
+
+# Colourise less
+# export LESS='-R --use-color -Dd+r$Du+b$'
+
+# XDG compliance #
+##################
+# Long list of programs that don't follow XDG folders unless they are
+# explicitly told so. Most of those are taken from the output of xdg-ninja
+
+# Bash
+export HISTFILE="${XDG_STATE_HOME}/bash/history"
+
+# Cargo
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+
+# Cuda
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
+
+# GPG
+# NOTE: do I want to do that?
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+
+# go
+export GOPATH="$XDG_DATA_HOME"/go
+
+# GTK2
+#export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
+
+# .icons
+#export XCURSOR_PATH=/usr/share/icons:$XDG_DATA_HOME/icons
+
+# NPM
+export NPM_CONFIG_INIT_MODULE="$XDG_CONFIG_HOME"/npm/config/npm-init.js
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME"/npm
+export NPM_CONFIG_TMP="$XDG_RUNTIME_DIR"/npm
+
+# nyx
+# this is a bit of a nightmare, see aliases and $XDG_CONFIG_HOME/nyxrc
+
+# Java
+# NOTE: some applications just ignore it
+
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+
+# Lynx
+export LYNX_CFG="$XDG_CONFIG_HOME"/lynx.cfg
+
+# Python
+export PYTHONHISTORY="XDG_STATE_HOME"/python_history
+# It "should" follow $PYTHON_HISTORY >v3.13, this is just for older versions
+export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
+
+# R
+export R_HISTFILE="$XDG_CONFIG_HOME/R/history"
+
+# TeXlive
+export TEXMFHOME=$XDG_DATA_HOME/texmf
+export TEXMFVAR=$XDG_CACHE_HOME/texlive/texmf-var
+export TEXMFCONFIG=$XDG_CONFIG_HOME/texlive/texmf-config
+
+# Vim/Neovim
+# NOTE: this doesn't differentiate between Vim/Neovim
+export GVIMINIT='let $MYGVIMRC="$XDG_CONFIG_HOME/vim/gvimrc" | source $MYGVIMRC'
+export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+# for different Vim/Neovim configs
+#export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | so $MYGVIMRC'
+#export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | so $MYVIMRC'
+
+# w3m
+export W3M_DIR="$XDG_DATA_HOME"/w3m
+
+# z
+export _Z_DATA="$XDG_DATA_HOME/z"
+
+# PATH #
+########
+
+# flatpaks
+export PATH=$PATH:"$XDG_DATA_HOME"/flatpak/exports/bin:/var/lib/flatpak/exports/bin
+
+# packages compiled with `cargo`
+export PATH=$PATH:"$CARGO_HOME"/bin
+
+# go binaries
+export PATH=$PATH:"$XDG_DATA_HOME"/go/bin

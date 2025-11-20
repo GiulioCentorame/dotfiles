@@ -24,41 +24,6 @@ if [ -d ~/.bashrc.d ]; then
 fi
 unset rc
 
-# ENVVARs #
-###########
-
-# QT theme handled by qt6ct
-export QT_QPA_PLATFORMTHEME=qt6ct
-
-# As God intended
-export VISUAL=/usr/bin/vim
-export EDITOR="vi -e"
-
-# Default terminal (nonstandard variable used by i3-sensible-terminal)
-export TERMINAL=st
-
-# Default pager (nonstandard but it's mainly for sacc)
-export PAGER=less
-
-# PATH #
-########
-
-# Add flatpaks to PATH
-export PATH=$PATH:~/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin
-
-# Add packages compiled with `cargo`
-export PATH=$PATH:~/.cargo/bin
-
-# Shell integration #
-#####################
-
-# fzf bash integration
-
-eval "$(fzf --bash)"
-
-# enable z
-. /usr/libexec/z.sh
-
 # Mamba #
 #########
 
@@ -74,7 +39,3 @@ else
 fi
 unset __mamba_setup
 # <<< mamba initialize <<<
-
-### Added by surfraw. To remove use surfraw-update-path -remove
-	export PATH=$PATH:/usr/libexec/surfraw
-### End surfraw addition.

@@ -1,0 +1,14 @@
+# vim: filetype=bash
+# Shell integration
+
+# fzf bash integration
+eval "$(fzf --bash)"
+
+# enable z
+. /usr/libexec/z.sh
+
+# handlr 
+# also note that this shadows `xdg-open`
+# (see ~/.local/bin/xdg-open)
+eval "$(COMPLETE='bash' handlr)"
+

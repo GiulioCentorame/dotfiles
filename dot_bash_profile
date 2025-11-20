@@ -6,6 +6,3 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # User specific environment and startup programs
-### Added by surfraw. To remove use surfraw-update-path -remove
-	export PATH=$PATH:/usr/libexec/surfraw
-### End surfraw addition.
