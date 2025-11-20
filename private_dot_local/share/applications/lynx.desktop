@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Lynx
+GenericName=Web Browser
+Comment=Lynx is the text web browser.
+Categories=Network;WebBrowser;
+Exec=/usr/bin/lynx %u
+Icon=lynx
+StartupNotify=true
+StartupWMClass=lynx
+MimeType=text/html;text/xml;application/xhtml_xml;x-scheme-handler/http;x-scheme-handler/https;
+Terminal=true

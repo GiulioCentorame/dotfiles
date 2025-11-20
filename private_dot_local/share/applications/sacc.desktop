@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=sacc
+GenericName=Web Browser
+Comment=sacc (short for saccomys) is a terminal gopher client
+Categories=Network;WebBrowser;
+Exec=/usr/local/bin/sacc %u
+Icon=sacc
+StartupNotify=true
+StartupWMClass=sacc
+MimeType=x-scheme-handler/gopher;x-scheme-handler/gophers;
+Terminal=true
