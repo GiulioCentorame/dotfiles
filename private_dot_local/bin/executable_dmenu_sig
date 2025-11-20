@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+
+# Send signal to process through dmenu #
+########################################
+
+set -eu
+
+pid="$(ps -u $USER -o pid,comm,%cpu,%mem \
+	| dmenu -i -l 10 -p 'Process:' \
+	| awk '{print $1}')"
+
+# Exit cleanly if PID is an invalid string
+case "$pid" in
+	'PID') exit 1 ;;
+	   '') exit 1;;
+esac
+
+# Also exit if it isn't a positive integer
+[ "$pid" -ge 0 ] 2>/dev/null
+
+# Format list of signals (kindly provided by `kill -l`)
+sigs="$(kill -L | tr ' ' '\n' | awk '{print NR, "SIG"$1}')"
+# This is barely readable but it just adds a default option
+# that cancels the operation
+sigs="0 Cancel
+${sigs}"
+
+# TODO: some signals are more important than others
+# I want the following signals to be in this precise order:
+# - SIGTERM (15)
+# - SIGINT  (2)
+# - SIGHUP  (1)
+# - SIGKILL (9)
+
+sig="$(printf '%s\n' "$sigs" \
+	| dmenu -i -p 'Signals:' \
+	| cut -f1 -d' ' || exit 1)"
+
+# Send signal
+kill -s "$sig" "$pid"

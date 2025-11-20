@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+# Go to bookmark with dmenu
+set -eu
+
+buku --nostdin -p -f5 \
+| tr '\t' ' ' \
+| dmenu -i -l 10 -p 'Bookmark:' \
+| cut -d ' ' -f 1 \
+| xargs --no-run-if-empty buku -o
+

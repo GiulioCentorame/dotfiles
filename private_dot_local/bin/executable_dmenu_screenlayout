@@ -12,7 +12,7 @@
 screenlayout_path="$HOME/.screenlayout"
 
 find "$screenlayout_path" -iname "*.sh" -type f -executable \
-	-exec basename {} \; |\
-	sed 's/.sh$//g' |\
-	dmenu -p "Monitor layout preset:" |\
-	xargs -I {} sh "$screenlayout_path/{}.sh"
+	-exec basename {} \; \
+	| sed 's/.sh$//g' \
+	| dmenu -p "Monitor layout preset:" \
+	| xargs -I {} sh "$screenlayout_path/{}.sh"

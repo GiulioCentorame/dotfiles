@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+###################################
+# A small dmenu selector for tldr #
+###################################
+
+# launches a terminal window (with st) containing the chosen query
+
+# Quit silently if dmenu fails
+set -eu
+
+query="$(tldr --list | dmenu -i -p 'tldr:')"
+
+# HACK: this is a bit ugly, but it's the only way I found to keep the pager
+# open and exit when I quit the pager.
+# The pager options are there just to render Markdown
+st -t "tldr" -c "TLDR" -e sh \
+	-c "PAGER='less -R +gr'; tldr --pager $query; sh -c exit"
+
+

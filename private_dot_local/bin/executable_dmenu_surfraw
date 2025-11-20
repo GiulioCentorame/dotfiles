@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+set -euf
+
+# dmenu prompt for surfraw #
+############################
+
+# requires both dmenu and surfraw to be installed
+
+sr_elvi="$(surfraw -elvi |  # Get elvi list
+	grep -v '^ ' | # Get rid of title entries  (starting with space)
+	awk '{print $1}' | # subset it to only the elvi names
+	dmenu -i -p "Search using (elvi):" # Prompt user to select elvi
+)"
+
+# Ask for arguments and launch surfraw
+sr_query="$(dmenu < /dev/null -i -p "Search $sr_elvi (with arguments):")"
+
+# HACK: I have disabled globbing with set -f, but I still need word splitting
+# for the query 
+# shellcheck disable=SC2086
+surfraw "$sr_elvi" $sr_query
