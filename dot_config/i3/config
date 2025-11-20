@@ -34,7 +34,7 @@ exec --no-startup-id dex-autostart --autostart --environment i3
 # we need to kill it before and relaunch it after i3lock
 # see https://github.com/i3/i3lock/issues/333#issuecomment-1329881590
 # This is handled by a custom script in ~/.local/bin/
-exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.local/bin/lock.sh
+exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.local/bin/lock
 
 # Menu for shutdown, reboot, and lock screen
 # from https://wiki.archlinux.org/title/I3#Shutdown.2C_reboot.2C_lock_screen
@@ -98,7 +98,7 @@ exec --no-startup-id picom -b
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -110,11 +110,20 @@ bindsym $mod+Shift+q kill
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
 
+# A floating alterative with fzf
+#bindsym $mod+d exec --no-startup-id urxvt -title "fzf-menu-random123" -e bash -c 'i3-dmenu-desktop --dmenu=fzf'
+#for_window [title="fzf-menu-random123"] floating enable
+
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+# bindsym $mod+j focus left
+# bindsym $mod+k focus down
+# bindsym $mod+l focus up
+# bindsym $mod+semicolon focus right
+# use vim keybindings
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -123,10 +132,15 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+# bindsym $mod+Shift+j move left
+# bindsym $mod+Shift+k move down
+# bindsym $mod+Shift+l move up
+# bindsym $mod+Shift+semicolon move right
+# use vim keybindings
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -135,7 +149,9 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+# bindsym $mod+h split h
+# use keybindings similar to Sway
+bindsym $mod+b split h 
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -212,10 +228,15 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        # bindsym j resize shrink width 10 px or 10 ppt
+        # bindsym k resize grow height 10 px or 10 ppt
+        # bindsym l resize shrink height 10 px or 10 ppt
+        # bindsym semicolon resize grow width 10 px or 10 ppt
+	# vim keybindings
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -323,7 +344,7 @@ workspace 1 output primary DP-2-1-8
 exec --no-startup-id i3-battery-popup -L 30% -I 5% -t 1m -n
 
 # Set wallpaper (requires feh)
-exec --no-startup-id feh --bg-fill ~/Pictures/knvise3sljax.png
+exec --no-startup-id feh --no-fehbg --bg-fill ~/Pictures/knvise3sljax.png
 
 #exec --no-startup-id conky -c ~/.config/conky/desktop_guru/conky.conf
 
@@ -337,12 +358,14 @@ exec --no-startup-id feh --bg-fill ~/Pictures/knvise3sljax.png
 
 bindsym Print exec --no-startup-id dmenu_screenshot
 
+# Monitor management #
+######################
+
 # Move window to left/right monitor
 bindsym $mod+m move workspace to output left
 bindsym $mod+comma move workspace to output right
 
 # Laptop monitor toggle #
-#########################
 
 # Toggle laptop integrated display on/off 
 # from https://unix.stackexchange.com/questions/315726/how-to-create-xrandr-output-toggle-script
@@ -378,4 +401,61 @@ bindsym $mod+ctrl+c exec --no-startup-id hide_cursor_toggle.sh
 ####################################
 # This small script just picks a file from ~/.screenlayout through 
 # dmenu and executes it
-bindsym $mod+ctrl+d exec dmenu_screenlayout
+bindsym $mod+ctrl+d exec --no-startup-id dmenu_screenlayout
+
+# Autostart volume applet #
+###########################
+# sleep 5 is necessary as volumeicon doesn't like starting before pipewire/i3
+exec --no-startup-id sleep 5 && volumeicon&
+
+# Quick search with surfraw #
+#############################
+# Small script to send short search queries with surfraw
+# Prompts user to select an elvi, then prompts the user again to send a query
+# to the elvi (including arguments, if needed)
+bindsym $mod+ctrl+s exec --no-startup-id dmenu_surfraw
+
+# Quick tldr query #
+####################
+# Pull out a tldr page and open it in a paged terminal window
+bindsym $mod+ctrl+t exec --no-startup-id dmenu_tldr
+for_window [class="TLDR"] floating enable
+
+# Send signal to PID with dmenu #
+#################################
+# Select process from a list and send a signal to it
+bindsym $mod+ctrl+k exec --no-startup-id dmenu_sig
+
+# Open files with fzf #
+#######################
+# FIXME this is broken for some reason
+# TODO implement pistol for previews
+# # Open file with `xdg-open` through `fzf`
+# bindsym $mod+o exec --no-startup-id st -t 'fzf' -c 'FZF' -e open_fzf
+# # fzf windows shouldn't be tiled, just appear in front
+# for_window [class="FZF"] floating enable
+
+# Bookmarks #
+#############
+# FIXME also broken
+# # bookmarks are managed by buku, the shortcut opens a prompt to add
+# bindsym $mod+ctrl+b exec --no-startup-id "st -c 'BUKU' -t 'buku' -e sh -c 'xsel | buku -a -w; sh -c exit'"
+# for_window [class="BUKU"] floating enable
+bindsym $mod+ctrl+b exec --no-startup-id dmenu_buku
+
+# File explorer (lf) #
+######################
+# open lf in $HOME as file explorer
+bindsym $mod+p exec --no-startup-id st -e lf
+
+# pavucontrol #
+###############
+# Volume Control (pavucontrol)'s interface doesn't seem to be designed with
+# tiling in mind
+for_window [class="pavucontrol"] floating enable
+
+# Floating terminal #
+#####################
+# Launch a floating terminal
+bindsym $mod+Shift+Return exec --no-startup-id st -c "ST_FLOATING"
+for_window [class="ST_FLOATING"] floating enable
