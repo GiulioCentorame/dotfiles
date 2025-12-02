@@ -12,4 +12,4 @@ alias nyx="nyx --config $XDG_CONFIG_HOME/nyxrc"
 alias svn="svn --config-dir $XDG_CONFIG_HOME/subversion"
 
 # convert biblatex's bcf files to bibtex's bbl for portability purposes
-alias bcf2bbl="biber --output_format=bibtex --output-resolve-crossrefs"
+alias bcf2bbl='biber --output_format=bibtex --output-resolve-crossrefs'
