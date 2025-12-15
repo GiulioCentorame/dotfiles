@@ -13,3 +13,6 @@ alias svn="svn --config-dir $XDG_CONFIG_HOME/subversion"
 
 # convert biblatex's bcf files to bibtex's bbl for portability purposes
 alias bcf2bbl='biber --output_format=bibtex --output-resolve-crossrefs'
+
+# Use Vim keybindings with `info`
+alias info='info --vi-keys'
